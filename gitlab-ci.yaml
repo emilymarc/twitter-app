@@ -1,0 +1,22 @@
+image: python:3.6
+before_script:
+  - apt-get update -qq && apt-get install -y 
+  - python -V
+  - virtualenv venv
+  - source venv/bin/activate
+
+flake8:
+  stage: flake8 test
+  script:
+  - flake8 --max-line-length=120 bild/*.py
+
+build:
+  stage: build
+  script:
+    - docker build -f Dockerfile -t twitter:latest .
+  tags:
+    - build
+  retry: 2
+
+
+
